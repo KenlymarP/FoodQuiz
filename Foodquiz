@@ -1,0 +1,73 @@
+//Llamo al contrato
+const contract = "dev-1700192699288-91929849081638";
+//Obtengo los mensajes del contrato con las siguientes condiciones:
+//comenzando 10 mensajes antes del más reciente.
+//Se invierte el orden para mostrar los más recientes primero.
+const messages = Near.view(contract, "get_messages", {
+  from_index: 0 - 10,
+  limit: 100,
+}).reverse();
+
+//pequeña prueba en la consola del navegador
+console.log(messages);
+
+// Descargo la fuente externa
+const cssFont = fetch(
+  "https://fonts.googleapis.com/css2?family=Bungee+Spice&family=Lemon&display=swap"
+).body;
+
+//Mediante los styled compoments defino el estilo del título
+const Title = styled.div`
+  font-family: "Bungee Spice", sans-serif;
+  ${cssFont}
+`;
+
+//Mediante los styled compoments defino el estilo de las otras letras
+const others = styled.div`
+  font-family: "Lemon", serif;
+  ${cssFont}
+`;
+//renderizado
+return (
+  <div class="p-3">
+    <Title>
+      <h1 class="text-center">FoodQuiz</h1>
+    </Title>
+    <br />
+    {context.accountId ? (
+      <div class="border border-warning border-5 p-3 bg-danger bg-gradient rounded-5">
+        <others>
+          <Widget src={`kenlymar.testnet/widget/consumiendo_api`} />
+        </others>
+
+        <Widget src={`kenlymar.testnet/widget/guardar_plato`} />
+      </div>
+    ) : (
+      <p class="text-center py-2">Debes iniciar sesión para usarme</p>
+    )}
+    <br />
+    <div class="border border-5 border-warning p-3 bg-danger bg-gradient rounded-5">
+      <others>
+        <h3 class="text-center text-white fs-3">Historial</h3>
+      </others>
+      <table className="table table-bordered border-warning">
+        <thead>
+          <tr class="p-3 mb-2 text-white text-center">
+            <th>Jugador</th>
+            <th>Respuesta</th>
+          </tr>
+        </thead>
+        <tbody>
+          {messages.map((data, key) => {
+            return (
+              <tr class="text-center">
+                <td>{data.sender}</td>
+                <td>{data.text}</td>
+              </tr>
+            );
+          })}
+        </tbody>
+      </table>
+    </div>
+  </div>
+);

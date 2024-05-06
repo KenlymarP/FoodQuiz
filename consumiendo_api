@@ -1,0 +1,44 @@
+//función que obtiene una imagen de la API.
+const getImg = () => {
+  asyncFetch(`https://foodish-api.com/api/`)
+    .catch((err) => {
+      console.log(err);
+    })
+    .then((res) => {
+      console.log(res);
+      State.update({ img: res.body.image });
+    });
+};
+// comprueba si el state.img ya tiene una imagen almacenada.
+/*Si no está, llamo a la función getImg para recuperarla 
+y actualizar el estado con la URL de la imagen. */
+if (!state.img) {
+  getImg();
+}
+
+return (
+  <>
+    <div class="p-3">
+      <div class="card bg-warning rounded-5 border border-danger border-5">
+        <div class="card-header text-center text-white border-bottom border-danger border-5 fs-4">
+          ¿Como se llama este plato?
+        </div>
+        <div class="card-body d-flex justify-content-center align-items-center gap-2 mb-3">
+          <div class="ms-5">
+            <img src={state.img} style={{ width: "300px" }} />
+          </div>
+          <div>
+            <button
+              onClick={async () => {
+                getImg();
+              }}
+              class="rounded-pill bg-danger bg-gradient border border-danger"
+            >
+              <i class="bi bi-arrow-right-short text-warning fs-3"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </>
+);

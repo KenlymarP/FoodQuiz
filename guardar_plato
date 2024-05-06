@@ -1,0 +1,41 @@
+//Llamo al contrato
+const contract = "dev-1700192699288-91929849081638";
+State.init({
+  newMessage: "",
+});
+
+// Función para agregar un nuevo mensaje
+// Y si el mensaje esta vacio no se guarda
+const addNewMessage = () => {
+  if (state.newMessage.trim() == "") {
+    return;
+  }
+
+  // Llamo a la función 'add_message' del contrato
+  // Envio el texto del nuevo mensaje
+  Near.call(contract, "add_message", {
+    text: state.newMessage,
+  });
+};
+
+//renderizado
+return (
+  <div class="row g-3 justify-content-end align-items-end">
+    <div class="col-4">
+      <input
+        placeholder="Escribe aquí tu respuesta"
+        onChange={(e) => State.update({ newMessage: e.target.value })}
+      />
+    </div>
+    <div class="col-4">
+      <button
+        class="btn bg-warning bg-gradient border border-danger mt-2 rounded-pill text-danger fw-bolder"
+        onClick={async () => {
+          addNewMessage();
+        }}
+      >
+        Registrar
+      </button>
+    </div>
+  </div>
+);
